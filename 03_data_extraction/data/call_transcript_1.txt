@@ -1,0 +1,65 @@
+Call Starts: 2024-02-26 13:21:03
+
+Claims Rep: Thank you for calling Wreckless Wheels Insurance. How may I help you?
+
+Customer: I want to report an accident.
+
+Claims Rep: I'm sorry to hear that. Do you need emergency assistance?
+
+Customer: No, everyone involved is fine. The accident happened earlier this morning.
+
+Claims Rep: That's good to hear. Do you have your policy number handy so I can look it up?
+
+Customer: I'm sorry, I don't have that.
+
+Claims Rep: That's ok, let's start with your name.
+
+Customer: My name is Emily Smith.
+
+Claims Rep: Great. Do you know the license plate of the car that was involved?
+
+Customer: Yes, it's California 8675309.
+
+Claims Rep: And the make and model?
+
+Customer: It's a 2023 Toyota Prius.
+
+Claims Rep: Great, I've got your information right here. Your policy number is AX-324-7779. Can you tell me what happened?
+
+Customer: Yes, I was rear-ended by a Ford pickup truck.
+
+Claims Rep: Did you get the license plate number of the other vehicle?
+
+Customer: Yes, it was Texas 2571GT.
+
+Claims Rep: Were there any other vehicles involved?
+
+Customer: No
+
+Claims Rep: And who was driving your Prius at the time of the accident?
+
+Customer: I was.
+
+Claims Rep: Were there any other passengers in your Prius?
+
+Customer: No.
+
+Claims Rep: And did you get the name of the person driving the Ford pickup?
+
+Customer: Yes, it was Lucas Thompson.
+
+Claims Rep: And were there any other passengers in the pickup?
+
+Customer: No.
+
+Claims Rep: What were you doing at the time of the accident?
+
+Customer: I was stopped at a red light, waiting for it to change. I saw him coming up behind me. He was texting on his phone. I knew he was going to hit me but I couldn't do anything about it.
+
+Claims Rep: I'm very sorry to hear that. Again, you said no one was injured, is that correct.
+
+Customer: Yes, I'm fine, but my rear bumper and tail lights are all smashed up.
+
+Claims Rep: That's terrible. Let me assure you we'll get your car back in order as soon as possible and we'll get you a rental car if you need it in the meantime. Let's just go over a few more things...
+
+Call Ends: 2024-02-26 13:30:19

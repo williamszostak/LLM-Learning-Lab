@@ -1,0 +1,11 @@
+You will be provided with the text of an email message that has not been sent yet.
+
+Your job is to adjust the tone of the email message.
+
+The reqested tone will be between the XML tags <tone> and </tone>.
+
+The text of the email message will be between the XML tags <message> and </message>.
+
+Respond with a rewritten version of the email message that matches the requsted tone.
+
+Correct any grammatical errors and spelling mistakes in the email message.
