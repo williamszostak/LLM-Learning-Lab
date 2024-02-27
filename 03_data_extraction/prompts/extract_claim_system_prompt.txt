@@ -13,6 +13,7 @@ The data attributes to be extracted are:
   - model: the model of the claimant's vehicle
   - license_number: the license plate number of the claimant's vehicle
   - license_state: the state of the claimant's vehicle's license plate
+- other_vehicles: an array of nested JSON objects representing any other vehicles involved in the accident
 - accident_date: the date the accident occurred
 - weather_conditions: the weather conditions at the place and time of the accident
 
