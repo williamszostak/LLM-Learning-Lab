@@ -60,6 +60,79 @@ def get_config(file_path: str) -> dict:
     return config
 
 
+def read_file(file_path: str) -> str:
+    """
+    Reads the contents of a text file and returns them as a string.
+
+    Args:
+        file_path (str): The path to the text file.
+
+    Returns:
+        str: The contents of the text file as a string.
+
+    Raises:
+        FileNotFoundError: If the specified file_path does not exist.
+        IOError: If an error occurs while reading the file.
+    """
+    try:
+        with open(file_path, 'r') as file:
+            file_contents = file.read()
+        return file_contents
+    except FileNotFoundError:
+        raise FileNotFoundError(f"The file '{file_path}' does not exist.")
+    except IOError as e:
+        raise IOError(f"An error occurred while reading the file '{file_path}': {e}")
+
+
+def get_system_prompt():
+    """
+    Retrieves a system prompt from a text file and formats it into a message object.
+
+    This function reads the contents of a text file containing a system prompt,
+    creates a message object with the role "system" and the prompt content, and
+    returns the message object.
+
+    Returns:
+        dict: A message object representing the system prompt, with keys "role" 
+        and "content".
+
+    Raises:
+        FileNotFoundError: If the system prompt file is not found.
+        IOError: If an error occurs while reading the system prompt file.
+    """
+    prompt_file = os.path.join('prompts', 'tone_system_prompt.txt')
+    prompt = read_file(prompt_file)
+    prompt_message = {
+        "role": "system", 
+        "content": prompt
+        }
+    return prompt_message
+
+
+def get_user_prompt():
+    prompt_file = os.path.join('prompts', 'tone_user_prompt.txt')
+    prompt_template = read_file(prompt_file)
+
+    email_file = os.path.join('emails', 'message_1.txt')
+    email_message = read_file(email_file)
+
+    print(f'\nEmail message:\n{email_message}\n')
+    print("Let's adjust the tone of the email.")
+    print("For example, make it more professional, casual, direct, or polite.\n")
+
+    tone = input("What is your desired tone? ")
+
+    prompt = prompt_template.format(requested_tone=tone, message_text=email_message)
+
+    prompt_message = {
+        "role": "user", 
+        "content": prompt
+        }
+    return prompt_message
+
+
+
+
 def get_gpt_response(messages):
     """
     Sends a list of messages to a GPT model endpoint for completion and returns the response.
@@ -85,10 +158,6 @@ def get_gpt_response(messages):
         'temperature': config['temperature']
     }
     
-    print(f"\nCalling endpoint: {config['chat_endpoint']}")
-    print('with messages:')
-    pprint(messages)
-
     response = requests.post(
         url=config['chat_endpoint'],
         headers=config['api_headers'],
@@ -120,20 +189,18 @@ def main():
     """
     init()
 
-    messages =  [{
-        "role": "user", 
-        "content": "Tell me a joke."
-        }]
+    system_prompt = get_system_prompt()
+    user_prompt = get_user_prompt()
+
+    messages =  [
+        system_prompt,
+        user_prompt
+    ]
     
     response_object = get_gpt_response(messages=messages)
     
-    print(f'\nAPI response object:')
-    pprint(response_object)
-
     response = response_object['choices'][0]['message']['content']
-    print(f'\nResponse message content:\n{response}\n')
-
-
+    print(f'\nResponse message content:\n\n{response}\n')
 
 
 if __name__ == '__main__':

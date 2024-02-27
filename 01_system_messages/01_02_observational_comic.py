@@ -85,12 +85,12 @@ def get_gpt_response(messages):
         'temperature': config['temperature']
     }
     
-    print(f"\nCalling endpoint: {config['completions_endpoint']}")
+    print(f"\nCalling endpoint: {config['chat_endpoint']}")
     print('with messages:')
     pprint(messages)
 
     response = requests.post(
-        url=config['completions_endpoint'],
+        url=config['chat_endpoint'],
         headers=config['api_headers'],
         json=request_body
     )

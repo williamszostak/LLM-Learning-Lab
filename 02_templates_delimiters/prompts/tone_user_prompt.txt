@@ -1,0 +1,7 @@
+<tone>{requested_tone}</tone>
+
+<message>
+{message_text}
+</message>
+
+Rewrite the above message to match the specified tone.
