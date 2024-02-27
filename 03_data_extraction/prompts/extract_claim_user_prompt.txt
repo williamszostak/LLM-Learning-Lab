@@ -1,0 +1,7 @@
+Here is a call center transcript regarding an auto insurance claim:
+
+"""
+{transcript_text}
+"""
+
+Extract the requested information and format it as JSON.

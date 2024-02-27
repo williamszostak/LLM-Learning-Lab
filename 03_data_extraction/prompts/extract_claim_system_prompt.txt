@@ -1,0 +1,19 @@
+You will be provided with a transcript from an insurance claims call.
+
+Your job is to extract the claim information from the transcript and format the claim data as JSON.
+
+The transcript information will start and end with triple-quotes.
+
+The data attributes to be extracted are:
+- claimant_name: the full name of the claimant
+- policy_number: the claimant's auto insurance policy number
+- claimant_age: the age of the claimant
+- claimant_vehicle: a nested JSON object representing the claimant's vehicle, containing:
+  - make: the make of the claimant's vehicle
+  - model: the model of the claimant's vehicle
+  - license_number: the license plate number of the claimant's vehicle
+  - license_state: the state of the claimant's vehicle's license plate
+- accident_date: the date the accident occurred
+- weather_conditions: the weather conditions at the place and time of the accident
+
+If any attribute can't be determined, set the attribute to "unknown".

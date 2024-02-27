@@ -100,7 +100,7 @@ def get_system_prompt():
         FileNotFoundError: If the system prompt file is not found.
         IOError: If an error occurs while reading the system prompt file.
     """
-    prompt_file = os.path.join('prompts', 'tone_system_prompt.txt')
+    prompt_file = os.path.join('prompts', 'extract_claim_system_prompt.txt')
     prompt = read_file(prompt_file)
     prompt_message = {
         "role": "system", 
@@ -110,19 +110,13 @@ def get_system_prompt():
 
 
 def get_user_prompt():
-    prompt_file = os.path.join('prompts', 'tone_user_prompt.txt')
+    prompt_file = os.path.join('prompts', 'extract_claim_user_prompt.txt')
     prompt_template = read_file(prompt_file)
 
-    email_file = os.path.join('emails', 'message_1.txt')
-    email_message = read_file(email_file)
+    transcript_file = os.path.join('data', 'call_transcript_1.txt')
+    transcript_info = read_file(transcript_file)
 
-    print(f'\nEmail message:\n{email_message}\n')
-    print("Let's adjust the tone of the email.")
-    print("For example, make it more professional, casual, direct, or polite.\n")
-
-    tone = input("What is your desired tone? ")
-
-    prompt = prompt_template.format(requested_tone=tone, message_text=email_message)
+    prompt = prompt_template.format(transcript_text=transcript_info)
 
     prompt_message = {
         "role": "user", 
@@ -131,14 +125,17 @@ def get_user_prompt():
     return prompt_message
 
 
-
-
 def get_gpt_response(messages):
     """
     Sends a list of messages to a GPT model endpoint for completion and returns the response.
 
     Args:
-        messages (list): A list of strings representing the messages to be completed.
+        messages (list): A list of dictionaries representing the messages to be completed.
+                         Each dictionary contains a "role" and a "content".
+                         Example: [{"role": "system", "content": "You are a helpful assistant"},
+                                   {"role": "user", "content": "What is generative AI?"}]
+                         See OpenAI's API documentation for more info:
+                         https://platform.openai.com/docs/api-reference/introduction
 
     Returns:
         dict: A dictionary containing the response from the GPT model endpoint.
@@ -146,11 +143,6 @@ def get_gpt_response(messages):
     Raises:
         HTTPError: If the HTTP request to the GPT model endpoint fails.
         KeyError: If the response JSON does not contain expected keys.
-
-    Example:
-        If 'messages' is ["Hello!", "How are you?"], calling get_gpt_response(messages)
-        will send the messages to the specified GPT model endpoint, retrieve the completion,
-        and return the response as a dictionary.
     """
     request_body = {
         'model': config['model'],
@@ -181,11 +173,6 @@ def main():
     This function initializes the program, sends a message to a GPT model endpoint
     to generate a response to a predefined message, and prints the response message
     content.
-
-    Example:
-        This function can be called to initiate the program. It sends a message
-        to the GPT model endpoint asking for a joke, retrieves the response, and
-        prints the generated joke.
     """
     init()
 

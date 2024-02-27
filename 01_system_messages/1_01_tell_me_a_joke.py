@@ -65,7 +65,12 @@ def get_gpt_response(messages):
     Sends a list of messages to a GPT model endpoint for completion and returns the response.
 
     Args:
-        messages (list): A list of strings representing the messages to be completed.
+        messages (list): A list of dictionaries representing the messages to be completed.
+                         Each dictionary contains a "role" and a "content".
+                         Example: [{"role": "system", "content": "You are a helpful assistant"},
+                                   {"role": "user", "content": "What is generative AI?"}]
+                         See OpenAI's API documentation for more info:
+                         https://platform.openai.com/docs/api-reference/introduction
 
     Returns:
         dict: A dictionary containing the response from the GPT model endpoint.
@@ -73,11 +78,6 @@ def get_gpt_response(messages):
     Raises:
         HTTPError: If the HTTP request to the GPT model endpoint fails.
         KeyError: If the response JSON does not contain expected keys.
-
-    Example:
-        If 'messages' is ["Hello!", "How are you?"], calling get_gpt_response(messages)
-        will send the messages to the specified GPT model endpoint, retrieve the completion,
-        and return the response as a dictionary.
     """
     request_body = {
         'model': config['model'],
