@@ -3,7 +3,6 @@ import os
 import pathlib
 import json
 import requests
-from pprint import pprint
 
 
 def init():

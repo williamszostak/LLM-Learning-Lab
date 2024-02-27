@@ -2,8 +2,7 @@ from dotenv import load_dotenv
 import os
 import pathlib
 import json
-import requests
-from pprint import pprint
+from openai import OpenAI
 
 
 def init():
@@ -144,26 +143,14 @@ def get_gpt_response(messages):
         HTTPError: If the HTTP request to the GPT model endpoint fails.
         KeyError: If the response JSON does not contain expected keys.
     """
-    request_body = {
-        'model': config['model'],
-        'messages': messages,
-        'temperature': config['temperature']
-    }
-    
-    response = requests.post(
-        url=config['chat_endpoint'],
-        headers=config['api_headers'],
-        json=request_body
-    )
-    json = response.json()
+    client = OpenAI()
 
-    if response.ok:
-        return json
-    else:
-        print(f'\nReceived response status code: {response.status_code}')
-        if (json['error']['message']):
-            print(f"Error message: {json['error']['message']}")
-            response.raise_for_status()
+    response = client.chat.completions.create(
+        model=config['model'],
+        messages=messages,
+        temperature=config['temperature']
+    )
+    return response
 
 
 def main():
@@ -186,7 +173,7 @@ def main():
     
     response_object = get_gpt_response(messages=messages)
     
-    response = response_object['choices'][0]['message']['content']
+    response = response_object.choices[0].message.content
     print(f'\nResponse message content:\n\n{response}\n')
 
 
