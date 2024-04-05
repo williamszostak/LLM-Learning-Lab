@@ -21,8 +21,10 @@ def init():
     """
     global config
 
-    parent_dir = pathlib.Path(__file__).parent.parent.resolve()
+    script_dir = pathlib.Path(__file__).parent.resolve()
+    parent_dir = script_dir.parent.resolve()
     env_file_path = os.path.join(parent_dir, '.env')
+
     load_dotenv(env_file_path)
     openai_api_key = os.environ.get('OPENAI_API_KEY')
 
@@ -34,6 +36,7 @@ def init():
         'accept': '*/*',
         'Authorization': f'Bearer {openai_api_key}',
     }
+    config['script_dir'] = script_dir
 
 
 def get_config(file_path: str) -> dict:
@@ -99,7 +102,7 @@ def get_system_prompt():
         FileNotFoundError: If the system prompt file is not found.
         IOError: If an error occurs while reading the system prompt file.
     """
-    prompt_file = os.path.join('prompts', 'extract_claim_system_prompt.txt')
+    prompt_file = os.path.join(config['script_dir'], 'prompts', 'extract_claim_system_prompt.txt')
     prompt = read_file(prompt_file)
     prompt_message = {
         "role": "system", 
@@ -109,10 +112,10 @@ def get_system_prompt():
 
 
 def get_user_prompt():
-    prompt_file = os.path.join('prompts', 'extract_claim_user_prompt.txt')
+    prompt_file = os.path.join(config['script_dir'], 'prompts', 'extract_claim_user_prompt.txt')
     prompt_template = read_file(prompt_file)
 
-    transcript_file = os.path.join('data', 'call_transcript_1.txt')
+    transcript_file = os.path.join(config['script_dir'], 'data', 'call_transcript_1.txt')
     transcript_info = read_file(transcript_file)
 
     prompt = prompt_template.format(transcript_text=transcript_info)
