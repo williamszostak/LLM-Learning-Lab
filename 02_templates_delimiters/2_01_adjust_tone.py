@@ -21,8 +21,10 @@ def init():
     """
     global config
 
-    parent_dir = pathlib.Path(__file__).parent.parent.resolve()
+    script_dir = pathlib.Path(__file__).parent.resolve()
+    parent_dir = script_dir.parent.resolve()
     env_file_path = os.path.join(parent_dir, '.env')
+
     load_dotenv(env_file_path)
     openai_api_key = os.environ.get('OPENAI_API_KEY')
 
@@ -34,6 +36,7 @@ def init():
         'accept': '*/*',
         'Authorization': f'Bearer {openai_api_key}',
     }
+    config['script_dir'] = script_dir
 
 
 def get_config(file_path: str) -> dict:
@@ -99,7 +102,7 @@ def get_system_prompt():
         FileNotFoundError: If the system prompt file is not found.
         IOError: If an error occurs while reading the system prompt file.
     """
-    prompt_file = os.path.join('prompts', 'tone_system_prompt.txt')
+    prompt_file = os.path.join(config['script_dir'], 'prompts', 'tone_system_prompt.txt')
     prompt = read_file(prompt_file)
     prompt_message = {
         "role": "system", 
@@ -125,10 +128,10 @@ def get_user_prompt():
         FileNotFoundError: If the prompt file or email file is not found.
         IOError: If an error occurs while reading the prompt file or email file.
     """
-    prompt_file = os.path.join('prompts', 'tone_user_prompt.txt')
+    prompt_file = os.path.join(config['script_dir'], 'prompts', 'tone_user_prompt.txt')
     prompt_template = read_file(prompt_file)
 
-    email_file = os.path.join('data', 'email_message_1.txt')
+    email_file = os.path.join(config['script_dir'], 'data', 'email_message_1.txt')
     email_message = read_file(email_file)
 
     print(f'\nEmail message:\n{email_message}\n')
