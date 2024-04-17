@@ -5,6 +5,30 @@ import json
 from openai import OpenAI
 
 
+def main():
+    """
+    Executes the main routine of the program.
+    
+    This function initializes the program, sends a message to a GPT model endpoint
+    to generate a response to a predefined message, and prints the response message
+    content.
+    """
+    init()
+
+    system_prompt = get_system_prompt()
+    user_prompt = get_user_prompt()
+
+    messages =  [
+        system_prompt,
+        user_prompt
+    ]
+    
+    response_object = get_gpt_response(messages=messages)
+    
+    response = response_object.choices[0].message.content
+    print(f'\nResponse message content:\n\n{response}\n')
+
+
 def init():
     """
     Initialize the configuration for the application.
@@ -33,53 +57,6 @@ def init():
 
     config['openai_api_key'] = openai_api_key
     config['script_dir'] = script_dir
-
-
-def get_config(file_path: str) -> dict:
-    """
-    Reads a JSON configuration file and returns its contents as a dictionary.
-
-    Args:
-        file_path (str): The path to the JSON configuration file.
-
-    Returns:
-        dict: A dictionary containing the contents of the JSON configuration file.
-
-    Raises:
-        FileNotFoundError: If the specified file_path does not exist.
-        JSONDecodeError: If the contents of the file are not valid JSON.
-
-    Example:
-        If 'config.json' contains {"key": "value"}, calling get_config('config.json')
-        will return {'key': 'value'}.
-    """
-    with open(file_path, 'r') as config_file:
-        config = json.loads(config_file.read())
-    return config
-
-
-def read_file(file_path: str) -> str:
-    """
-    Reads the contents of a text file and returns them as a string.
-
-    Args:
-        file_path (str): The path to the text file.
-
-    Returns:
-        str: The contents of the text file as a string.
-
-    Raises:
-        FileNotFoundError: If the specified file_path does not exist.
-        IOError: If an error occurs while reading the file.
-    """
-    try:
-        with open(file_path, 'r') as file:
-            file_contents = file.read()
-        return file_contents
-    except FileNotFoundError:
-        raise FileNotFoundError(f"The file '{file_path}' does not exist.")
-    except IOError as e:
-        raise IOError(f"An error occurred while reading the file '{file_path}': {e}")
 
 
 def get_system_prompt():
@@ -173,28 +150,51 @@ def get_gpt_response(messages):
     return response
 
 
-def main():
+def get_config(file_path: str) -> dict:
     """
-    Executes the main routine of the program.
-    
-    This function initializes the program, sends a message to a GPT model endpoint
-    to generate a response to a predefined message, and prints the response message
-    content.
+    Reads a JSON configuration file and returns its contents as a dictionary.
+
+    Args:
+        file_path (str): The path to the JSON configuration file.
+
+    Returns:
+        dict: A dictionary containing the contents of the JSON configuration file.
+
+    Raises:
+        FileNotFoundError: If the specified file_path does not exist.
+        JSONDecodeError: If the contents of the file are not valid JSON.
+
+    Example:
+        If 'config.json' contains {"key": "value"}, calling get_config('config.json')
+        will return {'key': 'value'}.
     """
-    init()
+    with open(file_path, 'r') as config_file:
+        config = json.loads(config_file.read())
+    return config
 
-    system_prompt = get_system_prompt()
-    user_prompt = get_user_prompt()
 
-    messages =  [
-        system_prompt,
-        user_prompt
-    ]
-    
-    response_object = get_gpt_response(messages=messages)
-    
-    response = response_object.choices[0].message.content
-    print(f'\nResponse message content:\n\n{response}\n')
+def read_file(file_path: str) -> str:
+    """
+    Reads the contents of a text file and returns them as a string.
+
+    Args:
+        file_path (str): The path to the text file.
+
+    Returns:
+        str: The contents of the text file as a string.
+
+    Raises:
+        FileNotFoundError: If the specified file_path does not exist.
+        IOError: If an error occurs while reading the file.
+    """
+    try:
+        with open(file_path, 'r') as file:
+            file_contents = file.read()
+        return file_contents
+    except FileNotFoundError:
+        raise FileNotFoundError(f"The file '{file_path}' does not exist.")
+    except IOError as e:
+        raise IOError(f"An error occurred while reading the file '{file_path}': {e}")
 
 
 if __name__ == '__main__':

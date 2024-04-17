@@ -6,6 +6,35 @@ import requests
 from pprint import pprint
 
 
+def main():
+    """
+    Executes the main routine of the program.
+    
+    This function initializes the program, sends a message to a GPT model endpoint
+    to generate a response to a predefined message, and prints the response message
+    content.
+
+    Example:
+        This function can be called to initiate the program. It sends a message
+        to the GPT model endpoint asking for a joke, retrieves the response, and
+        prints the generated joke.
+    """
+    init()
+
+    messages =  [{
+        "role": "user", 
+        "content": "Tell me a joke."
+        }]
+    
+    response_object = get_gpt_response(messages=messages)
+    
+    print(f'\nAPI response object:')
+    pprint(response_object)
+
+    response = response_object['choices'][0]['message']['content']
+    print(f'\nResponse message content:\n{response}\n')
+
+
 def init():
     """
     Initialize the configuration for the application.
@@ -35,29 +64,6 @@ def init():
         'accept': '*/*',
         'Authorization': f'Bearer {openai_api_key}',
     }
-
-
-def get_config(file_path: str) -> dict:
-    """
-    Reads a JSON configuration file and returns its contents as a dictionary.
-
-    Args:
-        file_path (str): The path to the JSON configuration file.
-
-    Returns:
-        dict: A dictionary containing the contents of the JSON configuration file.
-
-    Raises:
-        FileNotFoundError: If the specified file_path does not exist.
-        JSONDecodeError: If the contents of the file are not valid JSON.
-
-    Example:
-        If 'config.json' contains {"key": "value"}, calling get_config('config.json')
-        will return {'key': 'value'}.
-    """
-    with open(file_path, 'r') as config_file:
-        config = json.loads(config_file.read())
-    return config
 
 
 def get_gpt_response(messages):
@@ -105,35 +111,27 @@ def get_gpt_response(messages):
             response.raise_for_status()
 
 
-def main():
+def get_config(file_path: str) -> dict:
     """
-    Executes the main routine of the program.
-    
-    This function initializes the program, sends a message to a GPT model endpoint
-    to generate a response to a predefined message, and prints the response message
-    content.
+    Reads a JSON configuration file and returns its contents as a dictionary.
+
+    Args:
+        file_path (str): The path to the JSON configuration file.
+
+    Returns:
+        dict: A dictionary containing the contents of the JSON configuration file.
+
+    Raises:
+        FileNotFoundError: If the specified file_path does not exist.
+        JSONDecodeError: If the contents of the file are not valid JSON.
 
     Example:
-        This function can be called to initiate the program. It sends a message
-        to the GPT model endpoint asking for a joke, retrieves the response, and
-        prints the generated joke.
+        If 'config.json' contains {"key": "value"}, calling get_config('config.json')
+        will return {'key': 'value'}.
     """
-    init()
-
-    messages =  [{
-        "role": "user", 
-        "content": "Tell me a joke."
-        }]
-    
-    response_object = get_gpt_response(messages=messages)
-    
-    print(f'\nAPI response object:')
-    pprint(response_object)
-
-    response = response_object['choices'][0]['message']['content']
-    print(f'\nResponse message content:\n{response}\n')
-
-
+    with open(file_path, 'r') as config_file:
+        config = json.loads(config_file.read())
+    return config
 
 
 if __name__ == '__main__':
