@@ -32,10 +32,6 @@ def init():
     config = get_config(config_file_path)
 
     config['openai_api_key'] = openai_api_key
-    config['api_headers'] = {
-        'accept': '*/*',
-        'Authorization': f'Bearer {openai_api_key}',
-    }
     config['script_dir'] = script_dir
 
 
@@ -112,6 +108,24 @@ def get_system_prompt():
 
 
 def get_user_prompt():
+    """
+    Constructs a user prompt message by integrating a transcript text into a predefined prompt template.
+
+    This function reads a prompt template from a text file located in a subdirectory 'prompts' within the directory
+    specified by 'config['script_dir']'. It also reads a transcript file from a subdirectory 'data' within the same directory.
+    The function then formats the prompt template with the content of the transcript file to create a customized user prompt.
+    The prompt is packaged into a dictionary representing the message with the role set to 'user' and the content set to the
+    formatted prompt.
+
+    Returns:
+        dict: A dictionary containing the user role and the formatted prompt content.
+
+    Example of returned dictionary:
+        {
+            "role": "user",
+            "content": "Based on your conversation about [topic], it seems like ..."
+        }
+    """
     prompt_file = os.path.join(config['script_dir'], 'prompts', 'extract_claim_user_prompt.txt')
     prompt_template = read_file(prompt_file)
 
@@ -130,6 +144,9 @@ def get_user_prompt():
 def get_gpt_response(messages):
     """
     Sends a list of messages to a GPT model endpoint for completion and returns the response.
+    Uses the OpenAI python library to call the API and get the response.
+    See OpenAI's python library documentation for more info:
+    https://github.com/openai/openai-python
 
     Args:
         messages (list): A list of dictionaries representing the messages to be completed.
@@ -146,7 +163,7 @@ def get_gpt_response(messages):
         HTTPError: If the HTTP request to the GPT model endpoint fails.
         KeyError: If the response JSON does not contain expected keys.
     """
-    client = OpenAI()
+    client = OpenAI(api_key=config['openai_api_key'])
 
     response = client.chat.completions.create(
         model=config['model'],
