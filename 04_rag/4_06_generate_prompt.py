@@ -9,7 +9,24 @@ from ast import literal_eval
 
 
 def main():
+    """
+    Main execution function that processes user questions to find similar content and generates a GPT prompt.
 
+    This function orchestrates several steps to interact with a user, find relevant content based on their queries,
+    and prepare a prompt for further processing or response generation. Specifically, it:
+    1. Initializes the environment using `init()`.
+    2. Loads a DataFrame from a CSV containing embeddings using `read_csv_to_dataframe`.
+    3. Obtains a user question through `get_user_question`.
+    4. Finds the top three most similar content pieces to the user's question using `find_most_similar_content`.
+    5. Generates a GPT prompt from these content pieces using `generate_prompt`.
+    6. Prints the generated prompt clearly to the console for user review or further action.
+
+    The function relies on several helper functions and a global `config` dictionary which should be appropriately set
+    to include paths and settings needed for operation.
+
+    Outputs:
+        - Prints the prompt content to the console, formatted with header and footer lines for clarity.
+    """
     init()
 
     embeddings = read_csv_to_dataframe(csv_file_path=config['vector_file'])
@@ -132,6 +149,17 @@ def find_most_similar_content(text: str, embeddings: pandas.DataFrame, max: int)
 
 
 def generate_prompt(question: str, document_sections: pandas.DataFrame) -> str:
+    """
+    Generates a prompt for a user based on their question and the most relevant sections from a document.
+
+    Parameters:
+        question (str): The user's question that needs to be addressed in the prompt.
+        document_sections (pandas.DataFrame): A DataFrame containing the document sections that are most relevant
+                                              to the user's question. Expected to have columns 'Page', 'Section', and 'Content'.
+
+    Returns:
+        dict: A dictionary with two keys, 'role' set to 'user' and 'content' containing the fully formatted prompt.
+    """
     prompt_template = read_file(config['user_prompt_file'])
     
     section_text = ''
@@ -149,24 +177,6 @@ def generate_prompt(question: str, document_sections: pandas.DataFrame) -> str:
         "content": prompt
         }
     return prompt_message
-
-
-def print_best_matches(best_matches: pandas.DataFrame) -> None:
-    """
-    Prints the details of the best matching documents or content sections found.
-
-    Parameters:
-        best_matches (pandas.DataFrame): A DataFrame that includes at least the columns 'Similarity', 'Page',
-                                         'Section', and 'Content'. Each row represents a match with these details.
-
-    """
-    print("\n--------------------------------")
-    for index, row in best_matches.iterrows():
-        print(f"\n#{index+1} match: Similarity: {row.Similarity:.4f}")
-        print(f"Page: {row.Page}")
-        print(f"Section: {row.Section}")
-        print(f"Content:\n{row.Content}\n")
-    print("--------------------------------")
 
 
 def get_gpt_embedding_vector(text: str) -> list:
