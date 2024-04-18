@@ -146,7 +146,7 @@ def get_gpt_response(messages):
         KeyError: If the response JSON does not contain expected keys.
     """
     request_body = {
-        'model': config['model'],
+        'model': config['chat_model'],
         'messages': messages,
         'temperature': config['temperature']
     }

@@ -143,7 +143,7 @@ def get_gpt_response(messages):
     client = OpenAI(api_key=config['openai_api_key'])
 
     response = client.chat.completions.create(
-        model=config['model'],
+        model=config['chat_model'],
         messages=messages,
         temperature=config['temperature']
     )
