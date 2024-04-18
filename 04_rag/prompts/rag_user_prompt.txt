@@ -1,0 +1,7 @@
+Use the information in the following documents to answer the question about Ka-Pow! Comics Cafe.
+<documents>
+{web_extracts}
+</documents>
+
+Answer the following question:
+{question}
