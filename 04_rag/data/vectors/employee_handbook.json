@@ -1,0 +1,23 @@
+{
+    "employee_handbook": {
+        "sections": [
+            {
+                "section": "1",
+                "title": "Behavior",
+                "guidelines": [
+                    {"number": "1.1", "guideline": "Be kind to each other"},
+                    {"number": "1.2", "guideline": "Always do the right thing"}
+                ]
+            },
+            {
+                "section": "2",
+                "title": "Time Off",
+                "guidelines": [
+                    {"number": "2.1", "guideline": "Employees receive 15 days of Personal Time Off (PTO) in their first year"},
+                    {"number": "2.2", "guideline": "Employees accrue 1.5 days of PTO per month"},
+                    {"number": "2.3", "guideline": "PTO may be used for vacation, sick days, or any reason an employee needs time off from work"}
+                ]
+            }
+        ]
+    }
+}
