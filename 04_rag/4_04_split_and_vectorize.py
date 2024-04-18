@@ -5,9 +5,29 @@ import json
 from openai import OpenAI
 from langchain_text_splitters import HTMLHeaderTextSplitter
 import csv
-from pprint import pprint
+
 
 def main():
+    """
+    Main execution function that initializes settings, processes multiple HTML files, and outputs results to a CSV file.
+
+    This function performs the following steps:
+    1. Initializes global configuration settings.
+    2. Retrieves an HTML splitter object configured to split HTML files based on certain headers.
+    3. Opens a specified output CSV file and sets up a CSV writer to write data.
+    4. Iterates over all HTML files in a specified directory, splits each file into sections, and processes each section:
+       a. Constructs a unique identifier for each section based on its metadata.
+       b. Generates an embedding vector for the section content using a GPT model.
+       c. Prints details about the process to the console.
+       d. Writes the file name, section identifier, section content, and embedding vector to the CSV file.
+
+    The function leverages a global configuration (`config`) that includes paths and settings used during processing.
+    Outputs of the function are both printed to the console and written to a CSV file for further analysis or storage.
+
+    Outputs:
+        - Console: Prints updates about the processing of each section including the file name, section details, and part of the embedding vector.
+        - CSV File: Writes the page name, section identifier, section content, and the entire embedding vector for each section processed.
+    """
 
     init()
 
@@ -15,7 +35,7 @@ def main():
 
     with open(config['output_file'],'w') as csv_file:
         writer = csv.writer(csv_file)
-        writer.writerow(('Page', 'Section', 'Content'))
+        writer.writerow(('Page', 'Section', 'Content', 'Embedding'))
 
         ii=0
         for source_file in pathlib.Path(config['html_dir']).glob('*.html'):
@@ -34,7 +54,16 @@ def main():
 
 
 def init():
+    """
+    Sets up the global configuration by defining paths, loading environment variables, and reading configuration files.
 
+    Global Variables:
+        config (dict): A dictionary to hold configuration details which is modified in-place.
+
+    Example:
+        Assuming the relevant files and environment variables are set correctly, calling this function
+        will populate the `config` dictionary with paths and settings required for other functions to operate properly.
+    """
     global config
 
     script_dir = pathlib.Path(__file__).parent.resolve()
@@ -59,6 +88,12 @@ def init():
 
 
 def get_html_splitter() -> object:
+    """
+    Creates and returns an HTMLHeaderTextSplitter object configured to split HTML content based on specified headers.
+
+    Returns:
+        object: An instance of HTMLHeaderTextSplitter configured with specific headers to detect and use for splitting HTML content.
+    """
     headers_to_split_on = [
         ("h1", "Header 1"),
         ("h2", "Header 2"),
@@ -81,12 +116,12 @@ def get_gpt_embedding_vector(text: str) -> list:
         text (str): The text for which to generate the embedding.
 
     Returns:
-        object: The response object from OpenAI API which contains the embedding data.
+        list: The embedding vector from the response object from OpenAI API.
 
     Example:
         Assuming 'config' is properly set with an OpenAI API key and a valid embedding model, if we pass:
         text = "example text"
-        The function will return an object containing the embedding vector for "example text".
+        The function will return the embedding vector for "example text".
     """
     client = OpenAI(api_key=config['openai_api_key'])
 
